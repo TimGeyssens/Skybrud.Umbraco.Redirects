@@ -13,16 +13,27 @@
 
         <div class="redirects-basic-options">
             <label class="sky-option">
+
+                <label class="sky-option">
+                    <strong>
+                        <localize key="redirects_site">Site</localize>
+                    </strong>
+                    <small class="umb-detail">
+                        <localize key="redirects_siteDescription"></localize>
+                    </small>
+                    <select ng-options="item as item.name for item in rootNodes track by item.id" ng-model="rootNode"></select>
+                </label>
+
                 <strong>
                     <localize key="redirects_selectFile">File</localize>
                 </strong>
-                
+
                 <umb-single-file-upload rebuild="rebuildInput"></umb-single-file-upload>
 
                 <div ng-show="invalidFileFormat" class="alert alert-error property-error">The uploaded file must be in <b>CSV</b> or Excel format.</div>
                 <!--<div class="btn-group">
-                    <input type="submit" ng-click="upload()" class="btn btn-success" value="Upload file" />
-                </div>-->
+        <input type="submit" ng-click="upload()" class="btn btn-success" value="Upload file" />
+    </div>-->
                 <div ng-show="noFile" class="alert alert-error property-error">A CSV file must be selected.</div>
             </label>
         </div>

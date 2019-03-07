@@ -38,7 +38,7 @@ namespace Skybrud.Umbraco.Redirects.Tests
 
             redirectsFile.FileName = string.Concat(Directory.GetCurrentDirectory(), "\\Files\\Excel\\redirects.xlsx");
 
-            importer.Import(redirectsFile);
+            importer.Import(0,redirectsFile);
 
             Assert.True(totalRedirects > 0);
         }
@@ -52,7 +52,7 @@ namespace Skybrud.Umbraco.Redirects.Tests
 
             redirectsFile.FileName = string.Concat(Directory.GetCurrentDirectory(), "\\Files\\Csv\\redirects.xlsx");
 
-            var response = importer.Import(redirectsFile);    
+            var response = importer.Import(0,redirectsFile);    
             
             Assert.True(response.ImportedItems.All(item => item.IsValid));
         }
@@ -67,7 +67,7 @@ namespace Skybrud.Umbraco.Redirects.Tests
             redirectsFile.FileName = string.Concat(Directory.GetCurrentDirectory(), "\\Files\\Csv\\redirects-blanklines.csv");
             redirectsFile.Seperator = CsvSeparator.Comma;
 
-            var response = importer.Import(redirectsFile);
+            var response = importer.Import(0,redirectsFile);
 
             Assert.Equal("Error", ((CsvRedirectsFile)response.File).File.Rows[4].Cells[3].Value);
             Assert.Equal("No source URL was provided or is in the wrong format", ((CsvRedirectsFile)response.File).File.Rows[4].Cells[4].Value);
@@ -83,7 +83,7 @@ namespace Skybrud.Umbraco.Redirects.Tests
             redirectsFile.FileName = string.Concat(Directory.GetCurrentDirectory(), "\\Files\\Csv\\redirects-redirectchain.csv");
             redirectsFile.Seperator = CsvSeparator.Comma;
 
-            var response = importer.Import(redirectsFile);
+            var response = importer.Import(0,redirectsFile);
 
             Assert.Equal("Warning", ((CsvRedirectsFile)response.File).File.Rows[0].Cells[3].Value);
             Assert.Equal("This redirect links to the URL (/destination1) in the file. This will result in a redirect chain", ((CsvRedirectsFile)response.File).File.Rows[0].Cells[4].Value);
@@ -99,7 +99,7 @@ namespace Skybrud.Umbraco.Redirects.Tests
             redirectsFile.FileName = string.Concat(Directory.GetCurrentDirectory(), "\\Files\\Csv\\redirects-redirectloop.csv");
             redirectsFile.Seperator = CsvSeparator.Comma;
 
-            var response = importer.Import(redirectsFile);
+            var response = importer.Import(0,redirectsFile);
             
             Assert.Equal("Error", ((CsvRedirectsFile)response.File).File.Rows[0].Cells[3].Value);
             Assert.Equal("This redirect would create a redirect loop as another redirect exists with the URL (/destination1) in the file. It has not been imported.", ((CsvRedirectsFile)response.File).File.Rows[0].Cells[4].Value);

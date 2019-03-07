@@ -18,9 +18,14 @@
         $scope.processing = false;
         $scope.processed = false;
         $scope.rebuildInput += 1;
-    }
+    };
 
 
+    $scope.rootNodes = [
+        { id: 0, name: 'All sites' }
+    ];
+
+    $scope.rootNode = $scope.rootNodes[0];
 
     //$http({
     //    method: 'POST',
@@ -76,8 +81,10 @@
         $scope.fileName = $scope.file.name;
         $scope.processing = true;
 
+
         var request = {
-            file: $scope.file
+            file: $scope.file,
+            rootNodeId: $scope.rootNode.Id
         };
 
         //$http.post("/umbraco/backoffice/api/Redirects/import", {
@@ -133,6 +140,7 @@
             transformRequest: function (data) {
                 var formData = new FormData();
                 formData.append("file", data.file);
+                formData.append("rootNodeId", data.rootNodeId);
                 return formData;
             },
             data: request
@@ -227,5 +235,14 @@
     }
 
     initLabels();
+
+
+    skybrudRedirectsService.getRootNodes().success(function (r) {
+        angular.forEach(r.data, function (rootNode) {
+            $scope.rootNodes.push(rootNode);
+
+        });
+    });
+
 
 });

@@ -40,13 +40,19 @@ namespace Skybrud.Umbraco.Redirects.Models.Import
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public virtual ImporterResponse Import(IRedirectsFile file)
+        public virtual ImporterResponse Import(int rootNodeId, IRedirectsFile file)
         {
             var response = new ImporterResponse();
             
             file.Load();
 
+            foreach(var item in file.ValidatedItems)
+                item.Item.RootNodeId = rootNodeId;
+
             response.ImportedItems = file.ValidatedItems;
+            
+
+
             response.File = file;
 
             var inserter = new SqlServerBulkCopy();

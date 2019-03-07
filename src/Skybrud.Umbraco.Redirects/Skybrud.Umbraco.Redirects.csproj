@@ -284,7 +284,9 @@
   <ItemGroup>
     <Compile Include="Domains\DomainUtils.cs" />
     <Compile Include="EventHandlers\MigrationEvents.cs" />
+    <Compile Include="EventHandlers\RedirectTrackingEventHandler.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\ContentBaseExtensions.cs" />
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Import\Csv\CsvCell.cs" />

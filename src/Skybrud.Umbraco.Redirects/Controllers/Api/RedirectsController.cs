@@ -349,10 +349,14 @@ namespace Skybrud.Umbraco.Redirects.Controllers.Api {
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
             var file = result.FileData[0];
+            var rootNodeId = 0;
+
+            int.TryParse(result.FormData["rootNodeId"], out rootNodeId);
+   
             var path = file.LocalFileName;
             var ext = path.Substring(path.LastIndexOf('.')).ToLower();
 
-            if (ext != ".csv" && ext != ".xlst")
+            if (ext != ".csv" && ext != ".xlsx")
             {
                 throw new HttpResponseException(new HttpResponseMessage
                 {
@@ -383,7 +387,7 @@ namespace Skybrud.Umbraco.Redirects.Controllers.Api {
                     break;
             }
                 
-            var response = importer.Import(redirectsFile);
+            var response = importer.Import(rootNodeId,redirectsFile);
 
             using (var ms = new MemoryStream())
             {
