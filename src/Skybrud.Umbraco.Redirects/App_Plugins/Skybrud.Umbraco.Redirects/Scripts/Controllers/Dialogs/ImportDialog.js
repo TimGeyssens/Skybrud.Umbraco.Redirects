@@ -140,7 +140,7 @@
             transformRequest: function (data) {
                 var formData = new FormData();
                 formData.append("file", data.file);
-                formData.append("rootNodeId", data.rootNodeId);
+                formData.append("rootNodeId", $scope.rootNode.Id);
                 return formData;
             },
             data: request
