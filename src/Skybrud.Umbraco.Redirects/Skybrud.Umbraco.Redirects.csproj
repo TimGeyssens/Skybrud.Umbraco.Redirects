@@ -324,9 +324,9 @@
     <Compile Include="Models\Import\ImporterResponse.cs" />
     <Compile Include="Models\Import\ImportErrorLevel.cs" />
     <Compile Include="Models\Import\File\IRedirectsFile.cs" />
-    <Compile Include="Models\Import\Validators\DuplicateSourceUrlValidator.cs" />
     <Compile Include="Models\Import\Validators\DestinationUrlValidator.cs" />
     <Compile Include="Models\Import\IRedirectPublishedContentFinder.cs" />
+    <Compile Include="Models\Import\Validators\DuplicateSourceUrlValidator.cs" />
     <Compile Include="Models\Import\Validators\RedirectChainValidator.cs" />
     <Compile Include="Models\Import\RedirectPublishedContentFinder.cs" />
     <Compile Include="Models\Import\RedirectItemValidationContext.cs" />

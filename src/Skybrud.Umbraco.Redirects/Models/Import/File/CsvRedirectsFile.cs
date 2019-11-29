@@ -93,8 +93,16 @@ namespace Skybrud.Umbraco.Redirects.Models.Import.File
 
             if (sourceUrl != null)
             {
+                var totalLength = sourceUrl.AbsolutePath.Length;
                 var lastSlash = sourceUrl.AbsolutePath.LastIndexOf('/');
-                var sourceUrlNoTrailingSlash = (lastSlash > 0) ? sourceUrl.AbsolutePath.Substring(0, lastSlash) : sourceUrl.AbsolutePath;
+
+                var sourceUrlNoTrailingSlash = sourceUrl.AbsolutePath;
+                if (lastSlash > 0 && sourceUrl.AbsolutePath[totalLength - 1] == '/')
+                {
+                   sourceUrlNoTrailingSlash = sourceUrl.AbsolutePath.Substring(0, lastSlash);
+                }
+
+                
 
                 redirectItemRow.Url = sourceUrlNoTrailingSlash;
 
