@@ -388,6 +388,10 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Web.config.uninstall.xdt" />
+    <Content Include="config\Dashboard.config.install.xdt" />
+    <Content Include="config\Dashboard.config.uninstall.xdt" />
+    <None Include="Web.config.install.xdt" />
     <None Include="web.config" />
     <Content Include="App_Plugins\Skybrud.Umbraco.Redirects\package.manifest" />
     <Content Include="App_Plugins\Skybrud.Umbraco.Redirects\Styles\Styles.less" />
