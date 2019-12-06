@@ -31,6 +31,10 @@
                 </div>
                 <input type="text" ng-model="redirectUrl" style="max-width: initial;" />
             </label>
+            <label class="sky-option">
+                <strong><localize key="redirects_isRegex">Use Regular Expressions</localize></strong>
+                <input type="checkbox" ng-model="redirect.isRegex" />
+            </label>
             <div class="sky-option">
                 <strong>
                     <localize key="redirects_destination">Destination</localize>
