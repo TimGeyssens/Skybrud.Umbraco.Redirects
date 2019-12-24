@@ -35,7 +35,7 @@
             </label>
             <label class="sky-option">
                 <strong><localize key="redirects_isRegex">Use Regular Expressions</localize></strong>
-                <input type="checkbox" ng-model="redirect.isRegex" />
+                <input type="checkbox" ng-model="redirect.regex" />
             </label>
             <div class="sky-option" ng-if="!page">
                 <strong>
@@ -44,7 +44,7 @@
                 <small class="umb-detail">
                     <localize key="redirects_labelDestinationDescription">Select the page or URL the user should be redirected to.</localize>
                 </small>
-                <small class="umb-detail" ng-if="redirect.isRegex">
+                <small class="umb-detail" ng-if="redirect.regex">
                     <localize key="redirects_isRegexDestinationDescription">You can use capturing groups backreferences when using Regex; $1, $2 etc.</localize>
                 </small>
                 <div ng-if="redirect.link">
