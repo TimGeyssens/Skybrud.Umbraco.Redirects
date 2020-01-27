@@ -311,7 +311,8 @@ namespace Skybrud.Umbraco.Redirects.EventHandlers
                         content = contentCache.GetById(content.Parent.Id);
 
                         domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
-                        rootNodeId = domains.First().RootContentId.Value;
+                        if(domains.Any())
+                            rootNodeId = domains.First().RootContentId.Value;
                     }
                 }
             }
