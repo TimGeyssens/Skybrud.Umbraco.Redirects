@@ -300,19 +300,22 @@ namespace Skybrud.Umbraco.Redirects.EventHandlers
             if(ApplicationContext.Current.Services.DomainService.GetAll(false).Any())
             {
                 var domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
-                if (domains.Any())
+                if (domains != null && domains.Any())
                 {
                     rootNodeId = domains.First().RootContentId.Value;
                 }
                 else
                 {
-                    while (!domains.Any() || content.Level > 1)
+                    while (domains == null || !domains.Any() || content.Level > 1)
                     {
                         content = contentCache.GetById(content.Parent.Id);
 
                         domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
-                        if(domains.Any())
-                            rootNodeId = domains.First().RootContentId.Value;
+                        if (domains != null && domains.Any())
+                        {
+                            if(domains.First().RootContentId.HasValue)
+                                rootNodeId = domains.First().RootContentId.Value;
+                        }
                     }
                 }
             }
