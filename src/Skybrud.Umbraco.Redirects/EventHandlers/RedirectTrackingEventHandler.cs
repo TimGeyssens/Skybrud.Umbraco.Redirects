@@ -293,46 +293,53 @@ namespace Skybrud.Umbraco.Redirects.EventHandlers
 
         private static void CreateRedirect(int contentId, Guid contentKey, string oldRoute)
         {
-
-            var contentCache = GetPublishedCache();
-            if (contentCache == null) return;
-
-            var newRoute = contentCache.GetRouteById(contentId);
-            if (IsNotRoute(newRoute) || oldRoute == newRoute) return;
-
-            var content = contentCache.GetById(contentId);
-            var rootNodeId = 0;
-            if(content != null && ApplicationContext.Current.Services.DomainService.GetAll(false).Any())
+            try
             {
-               
-                var domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
-                if (domains != null && domains.Any())
-                {
-                    if(domains.First().RootContentId.HasValue)
-                        rootNodeId = domains.First().RootContentId.Value;
-                }
-                else
-                {
-                    while (domains == null || !domains.Any() || content.Level > 1)
-                    {
-                        content = contentCache.GetById(content.Parent.Id);
+                var contentCache = GetPublishedCache();
+                if (contentCache == null) return;
 
-                        domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
-                        if (domains != null && domains.Any())
+                var newRoute = contentCache.GetRouteById(contentId);
+                if (IsNotRoute(newRoute) || string.IsNullOrEmpty(newRoute) || oldRoute == newRoute) return;
+
+                var content = contentCache.GetById(contentId);
+                if (content == null) return;
+
+                var rootNodeId = 0;
+                if (content != null && ApplicationContext.Current.Services.DomainService.GetAll(false).Any())
+                {
+
+                    var domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
+                    if (domains != null && domains.Any())
+                    {
+                        if (domains.First().RootContentId.HasValue)
+                            rootNodeId = domains.First().RootContentId.Value;
+                    }
+                    else
+                    {
+                        while (domains == null || !domains.Any() || content.Level > 1)
                         {
-                            if(domains.First().RootContentId.HasValue)
-                                rootNodeId = domains.First().RootContentId.Value;
+                            content = contentCache.GetById(content.Parent.Id);
+
+                            domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
+                            if (domains != null && domains.Any())
+                            {
+                                if (domains.First().RootContentId.HasValue)
+                                    rootNodeId = domains.First().RootContentId.Value;
+                            }
                         }
                     }
                 }
-            }
-            
-            var redirController = new RedirectsController();
-            redirController.AddRedirect(rootNodeId, oldRoute, "content", contentId, newRoute);
-;
-            //var redirectUrlService = ApplicationContext.Current.Services.RedirectUrlService;
-            //redirectUrlService.Register(oldRoute, contentKey);
 
+                if (oldRoute != newRoute)
+                {
+                    var redirController = new RedirectsController();
+                    redirController.AddRedirect(rootNodeId, oldRoute, "content", contentId, newRoute);
+                }
+;
+                //var redirectUrlService = ApplicationContext.Current.Services.RedirectUrlService;
+                //redirectUrlService.Register(oldRoute, contentKey);
+            }
+            catch { }
         }
 
         private static bool IsNotRoute(string route)
