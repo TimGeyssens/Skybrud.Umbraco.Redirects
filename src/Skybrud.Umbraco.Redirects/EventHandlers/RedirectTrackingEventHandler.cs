@@ -254,16 +254,21 @@ namespace Skybrud.Umbraco.Redirects.EventHandlers
 
             try
             {
-                foreach (var oldRoute in OldRoutes)
+                if (OldRoutes != null && OldRoutes.Any())
                 {
-                    // assuming we cannot have 'CacheUpdated' for only part of the infos else we'd need
-                    // to set a flag in 'Published' to indicate which entities have been refreshed ok
-                    CreateRedirect(oldRoute.Key, oldRoute.Value.Item1, oldRoute.Value.Item2);
+                    foreach (var oldRoute in OldRoutes)
+                    {
+                        // assuming we cannot have 'CacheUpdated' for only part of the infos else we'd need
+                        // to set a flag in 'Published' to indicate which entities have been refreshed ok
+                        if(oldRoute.Value != null && !string.IsNullOrEmpty(oldRoute.Value.Item2))
+                            CreateRedirect(oldRoute.Key, oldRoute.Value.Item1, oldRoute.Value.Item2);
+                    }
                 }
             }
             finally
             {
-                OldRoutes.Clear();
+                if (OldRoutes != null && OldRoutes.Any())
+                    OldRoutes.Clear();
                 RequestCache.ClearCacheItem(ContextKey3);
             }
         }
@@ -297,12 +302,14 @@ namespace Skybrud.Umbraco.Redirects.EventHandlers
 
             var content = contentCache.GetById(contentId);
             var rootNodeId = 0;
-            if(ApplicationContext.Current.Services.DomainService.GetAll(false).Any())
+            if(content != null && ApplicationContext.Current.Services.DomainService.GetAll(false).Any())
             {
+               
                 var domains = ApplicationContext.Current.Services.DomainService.GetAssignedDomains(content.Id, false);
                 if (domains != null && domains.Any())
                 {
-                    rootNodeId = domains.First().RootContentId.Value;
+                    if(domains.First().RootContentId.HasValue)
+                        rootNodeId = domains.First().RootContentId.Value;
                 }
                 else
                 {
